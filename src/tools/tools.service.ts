@@ -26,7 +26,7 @@ export class ToolsService {
   }
 
   async findAll() {
-    return await this.toolRepository.find();
+    return this.toolRepository.find();
   }
 
   async remove(id: string) {
