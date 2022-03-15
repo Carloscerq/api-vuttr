@@ -1,5 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToMany } from 'typeorm';
-import { Tag } from './tags';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Tool {
@@ -15,6 +14,6 @@ export class Tool {
   @Column()
   description: string;
 
-  @ManyToMany(() => Tag, (tag) => tag.tools)
-  tags: Tag[];
+  @Column("text", { array: true })
+  tags: string[];
 }

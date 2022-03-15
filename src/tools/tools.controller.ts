@@ -1,7 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Query,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { ToolsService } from './tools.service';
 import { CreateToolDto } from './dto/create-tool.dto';
-import { UpdateToolDto } from './dto/update-tool.dto';
 
 @Controller('tools')
 export class ToolsController {
@@ -13,22 +20,15 @@ export class ToolsController {
   }
 
   @Get()
-  findAll() {
+  findAll(@Query('tag') tag: string) {
+    if (tag) {
+      return this.toolsService.findAllByTag(tag);
+    }
     return this.toolsService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.toolsService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateToolDto: UpdateToolDto) {
-    return this.toolsService.update(+id, updateToolDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.toolsService.remove(+id);
+    return this.toolsService.remove(id);
   }
 }

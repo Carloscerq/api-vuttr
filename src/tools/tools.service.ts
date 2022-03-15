@@ -1,26 +1,47 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { CreateToolDto } from './dto/create-tool.dto';
-import { UpdateToolDto } from './dto/update-tool.dto';
+import { Tool } from './entities/tool.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class ToolsService {
-  create(createToolDto: CreateToolDto) {
-    return 'This action adds a new tool';
+  constructor(
+    @InjectRepository(Tool) private readonly toolRepository: Repository<Tool>,
+  ) {}
+
+  async create(createToolDto: CreateToolDto) {
+    try {
+      const tool = this.toolRepository.create({
+        title: createToolDto.title,
+        description: createToolDto.description,
+        link: createToolDto.link,
+        tags: createToolDto.tags,
+      });
+
+      return this.toolRepository.save(tool);
+    } catch (error) {
+      throw new BadRequestException();
+    }
   }
 
-  findAll() {
-    return `This action returns all tools`;
+  async findAll() {
+    return await this.toolRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} tool`;
+  async remove(id: string) {
+    try {
+      await this.toolRepository.delete(id);
+    } catch (error) {
+      throw new BadRequestException();
+    }
   }
 
-  update(id: number, updateToolDto: UpdateToolDto) {
-    return `This action updates a #${id} tool`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} tool`;
+  async findAllByTag(tag: string) {
+    return await this.toolRepository.find({
+      where: {
+        tags: tag,
+      },
+    });
   }
 }

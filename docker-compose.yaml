@@ -1,22 +1,21 @@
 version: '3.7'
 services:
   db:
-    image: mysql
+    image: postgres
     restart: always
     environment:
-      MYSQL_DATABASE: 'db'
-      MYSQL_USER: 'user'
-      MYSQL_PASSWORD: 'password'
-      MYSQL_ROOT_PASSWORD: 'password'
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=nest
     ports:
-      - "3306:3306"
+      - "5432:5432"
     expose:
-      - "3306"
+      - "5432"
   rest:
     build: .
     ports:
       - "3000:3000"
-    depends_on:
+    links:
       - db
     expose:
       - "3000"

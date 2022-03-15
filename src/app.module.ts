@@ -7,9 +7,9 @@ import { ToolsModule } from './tools/tools.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: 'localhost',
-      port: 3306,
+      type: 'postgres',
+      host: 'db',
+      port: 5432,
       username: 'root',
       password: 'root',
       database: 'nest',

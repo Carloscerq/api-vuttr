@@ -12,6 +12,8 @@ RUN yarn
 
 COPY . /home/node/app
 
+RUN ls /home/node/app/src
+
 EXPOSE 3000
 
 CMD yarn start:dev
